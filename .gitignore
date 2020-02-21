@@ -1,3 +1,4 @@
 composer.lock
 .php_cs.cache
 /Vendor
+.DS_Store
