@@ -1,0 +1,17 @@
+<?php
+
+/*
+ * This document has been generated with
+ * https://mlocati.github.io/php-cs-fixer-configurator/#version:2.16.1|configurator
+ * you can change this configuration by importing this file.
+ */
+
+return PhpCsFixer\Config::create()
+    ->setRules([
+        '@PSR2' => true,
+        '@Symfony' => true,
+    ])
+    ->setFinder(PhpCsFixer\Finder::create()
+        ->in(__DIR__)
+    )
+;
