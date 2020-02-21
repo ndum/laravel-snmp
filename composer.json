@@ -22,10 +22,10 @@
     "extra": {
         "laravel": {
             "providers": [
-                "ndum\\Laravel\\SnmpServiceProvider"
+                "Ndum\\Laravel\\SnmpServiceProvider"
             ],
             "aliases": {
-                "snmp": "ndum\\Laravel\\Facades\\Snmp"
+                "snmp": "Ndum\\Laravel\\Facades\\Snmp"
             }
         }
     },
