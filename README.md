@@ -21,7 +21,7 @@ The official documentation can be found [here](https://github.com/FreeDSx/SNMP#d
 
 SNMP traps are not yet supported in the current version. (Coming Soon!)
 
-## Bugs / Contributions
+## Issues / Contributions
 
 Directly via GitHub
 
