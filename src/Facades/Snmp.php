@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Facade;
 /**
  * @author shimomo
  */
-class SnmpFacade extends Facade
+class Snmp extends Facade
 {
     /**
      * @return string
