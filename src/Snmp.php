@@ -1,6 +1,6 @@
 <?php
 
-namespace ndum\Laravel;
+namespace Ndum\Laravel;
 
 use Exception;
 use FreeDSx\Snmp\SnmpClient;

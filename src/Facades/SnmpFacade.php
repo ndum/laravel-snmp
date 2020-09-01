@@ -1,6 +1,6 @@
 <?php
 
-namespace ndum\Laravel\Facades;
+namespace Ndum\Laravel\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
