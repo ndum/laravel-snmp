@@ -31,9 +31,9 @@ class Snmp
     }
 
     /**
-     * @param $host
-     * @param $version
-     * @param $community
+     * @param string $host
+     * @param int $version
+     * @param string $community
      * @param int $port
      * @param string $transport
      * @param null $user
@@ -65,27 +65,19 @@ class Snmp
     }
 
     /**
-     * @return Requests
-     */
-    public function request()
-    {
-        return new Requests;
-    }
-
-    /**
-     * @param $oids
+     * @param array $oidList
      * @return \FreeDSx\Snmp\OidList
      * @throws \FreeDSx\Snmp\Exception\ConnectionException
      * @throws \FreeDSx\Snmp\Exception\SnmpRequestException
      */
-    public function get($oids)
+    public function get($oidList)
     {
-        return $this->client->get($oids);
+        return $this->client->get($oidList);
     }
 
     /**
-     * @param $value
-     * @return string|null
+     * @param string $value
+     * @return string
      * @throws \FreeDSx\Snmp\Exception\ConnectionException
      * @throws \FreeDSx\Snmp\Exception\SnmpRequestException
      */
@@ -95,7 +87,7 @@ class Snmp
     }
 
     /**
-     * @param $oid
+     * @param string $oid
      * @return \FreeDSx\Snmp\Oid|null
      * @throws \FreeDSx\Snmp\Exception\ConnectionException
      * @throws \FreeDSx\Snmp\Exception\SnmpRequestException
@@ -114,8 +106,8 @@ class Snmp
     }
 
     /**
-     * @param $oids
-     * @return \FreeDSx\Snmp\Message\Response\MessageResponseInterface
+     * @param string $oids
+     * @return \FreeDSx\Snmp\Message\Response\MessageResponseInterface|null
      * @throws \FreeDSx\Snmp\Exception\ConnectionException
      * @throws \FreeDSx\Snmp\Exception\SnmpRequestException
      */
@@ -157,5 +149,13 @@ class Snmp
     public function getBulk($reps, $nonRepeater, $oid)
     {
         return $this->client->getBulk($reps, $nonRepeater, $oid);
+    }
+
+    /**
+     * @return Requests
+     */
+    public function request()
+    {
+        return new Requests;
     }
 }
