@@ -4,7 +4,7 @@ This Laravel-Package provides an simple SNMP-Wrapper for FreeDSx/SNMP class
 
 ## Requirements
 
-Requires: [FreeDSx/SNMP](https://github.com/FreeDSx/SNMP) and Laravel >= 5.5 or Laravel 6.x / 7.x
+Requires: [FreeDSx/SNMP](https://github.com/FreeDSx/SNMP) and Laravel >= 5.5 or Laravel 6.x / 7.x / 8.x
 
 ## Installation
 Install via Composer.
