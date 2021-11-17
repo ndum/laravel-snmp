@@ -8,10 +8,8 @@ class SnmpServiceProvider extends ServiceProvider
 {
     /**
      * Register services.
-     *
-     * @return void
      */
-    public function register()
+    public function register(): void
     {
         $this->app->singleton('snmp', function ($app) {
             return new Snmp();
@@ -20,10 +18,8 @@ class SnmpServiceProvider extends ServiceProvider
 
     /**
      * Bootstrap services.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
     }
 }

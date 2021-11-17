@@ -1,6 +1,8 @@
 # laravel-snmp
 
-This Laravel-Package provides an simple SNMP-Wrapper for FreeDSx/SNMP class
+This Laravel-Package provides an simple SNMP-Wrapper for FreeDSx/SNMP class.
+
+A refactored version is in planning the next weeks. (Nov. 2021) This version will provide more options and SNMP traps support.
 
 ## Requirements
 
@@ -38,9 +40,22 @@ $snmp = Snmp::newClient('servername', 2, 'secret');
 $result = $snmp->getValue('1.3.6.1.2.1.1.5.0'); ## hostname
 dd($result);
 ```
+## Extras
+
+##### Timeout-Settings:
+```php
+use Ndum\Laravel\Snmp;
+
+$snmp = new Snmp();
+$snmp->newClient('servername', 2, 'secret');
+$snmp->setTimeoutConnectValue(5); # set a value for timeout_connect
+$snmp->setTimeoutReadValue(10); # set a value for timeout_read
+
+$result = $snmp->getValue('1.3.6.1.2.1.1.5.0'); ## hostname
+dd($result);
+```
 
 ## Limitations
-
 SNMP traps are not yet supported in the current version. (Coming Soon!)
 
 ## Issues / Contributions

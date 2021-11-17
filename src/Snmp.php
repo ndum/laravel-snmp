@@ -3,8 +3,14 @@
 namespace Ndum\Laravel;
 
 use Exception;
-use FreeDSx\Snmp\SnmpClient;
+use FreeDSx\Snmp\Exception\ConnectionException;
+use FreeDSx\Snmp\Exception\SnmpRequestException;
+use FreeDSx\Snmp\Message\Response\MessageResponseInterface;
+use FreeDSx\Snmp\Oid;
+use FreeDSx\Snmp\OidList;
 use FreeDSx\Snmp\Requests;
+use FreeDSx\Snmp\SnmpClient;
+use FreeDSx\Snmp\SnmpWalk;
 
 class Snmp
 {
@@ -20,6 +26,8 @@ class Snmp
 
     /**
      * Snmp constructor.
+     *
+     * @throws Exception
      */
     public function __construct()
     {
@@ -45,8 +53,9 @@ class Snmp
      * @param null $priv_pwd
      * @return SnmpClient
      */
-    public function newClient($host, $version, $community, $port = 161, $transport = 'udp', $user = null, $auth = false,
-        $auth_mech = null, $auth_pwd = null, $use_priv = false, $priv_mech = null, $priv_pwd = null)
+    public function newClient(string $host, int $version, string $community, int $port = 161, string $transport = 'udp',
+                              $user = null, bool $auth = false, $auth_mech = null, $auth_pwd = null, bool $use_priv = false,
+                              $priv_mech = null, $priv_pwd = null): SnmpClient
     {
         return $this->client = new SnmpClient([
             'host' => $host,
@@ -60,80 +69,98 @@ class Snmp
             'auth_pwd' => $auth_pwd,
             'use_priv' => $use_priv,
             'priv_mech' => $priv_mech,
-            'priv_pwd' => $priv_pwd
+            'priv_pwd' => $priv_pwd,
         ]);
     }
 
     /**
-     * @param array $oidList
-     * @return \FreeDSx\Snmp\OidList
-     * @throws \FreeDSx\Snmp\Exception\ConnectionException
-     * @throws \FreeDSx\Snmp\Exception\SnmpRequestException
+     * @param int $timeout
      */
-    public function get($oidList)
+    public function setTimeoutConnectValue(int $timeout = 5): void
+    {
+        $options = $this->getOptions();
+
+        $options['timeout_connect'] = $timeout;
+
+        $this->setOptions($options);
+    }
+
+    /**
+     * @param int $timeout
+     */
+    public function setTimeoutReadValue(int $timeout = 10): void
+    {
+        $options = $this->getOptions();
+
+        $options['timeout_read'] = $timeout;
+
+        $this->setOptions($options);
+    }
+
+    /**
+     * @param $oidList
+     *
+     * @return OidList
+     * @throws ConnectionException
+     * @throws SnmpRequestException
+     */
+    public function get($oidList): OidList
     {
         return $this->client->get($oidList);
     }
 
     /**
-     * @param string $value
-     * @return string
-     * @throws \FreeDSx\Snmp\Exception\ConnectionException
-     * @throws \FreeDSx\Snmp\Exception\SnmpRequestException
+     * @throws ConnectionException
+     * @throws SnmpRequestException
      */
-    public function getValue($value)
+    public function getValue(string $value): string
     {
         return $this->client->getValue($value);
     }
 
     /**
-     * @param string $oid
-     * @return \FreeDSx\Snmp\Oid|null
-     * @throws \FreeDSx\Snmp\Exception\ConnectionException
-     * @throws \FreeDSx\Snmp\Exception\SnmpRequestException
+     * @throws ConnectionException
+     * @throws SnmpRequestException
      */
-    public function getOid($oid)
+    public function getOid(string $oid): ?Oid
     {
         return $this->client->getOid($oid);
     }
 
     /**
-     * @return \FreeDSx\Snmp\SnmpWalk
+     * @return SnmpWalk
      */
-    public function walk()
+    public function walk(): SnmpWalk
     {
         return $this->client->walk();
     }
 
     /**
-     * @param string $oids
-     * @return \FreeDSx\Snmp\Message\Response\MessageResponseInterface|null
-     * @throws \FreeDSx\Snmp\Exception\ConnectionException
-     * @throws \FreeDSx\Snmp\Exception\SnmpRequestException
+     * @throws ConnectionException
+     * @throws SnmpRequestException
      */
-    public function setOids($oids)
+    public function setOids(Oid $oids): ?MessageResponseInterface
     {
         return $this->client->set($oids);
     }
 
     /**
      * @param $request
-     * @return \FreeDSx\Snmp\Message\Response\MessageResponseInterface|null
-     * @throws \FreeDSx\Snmp\Exception\ConnectionException
-     * @throws \FreeDSx\Snmp\Exception\SnmpRequestException
+     *
+     * @return MessageResponseInterface|null
+     * @throws ConnectionException
+     * @throws SnmpRequestException
      */
-    public function send($request)
+    public function send($request): ?MessageResponseInterface
     {
         return $this->client->send($request);
     }
 
     /**
-     * @param $oids
-     * @return \FreeDSx\Snmp\OidList
-     * @throws \FreeDSx\Snmp\Exception\ConnectionException
-     * @throws \FreeDSx\Snmp\Exception\SnmpRequestException
+     * @throws ConnectionException
+     * @throws SnmpRequestException
      */
-    public function getNext($oids)
+    public function getNext(Oid $oids): OidList
     {
         return $this->client->getNext($oids);
     }
@@ -141,12 +168,12 @@ class Snmp
     /**
      * @param $reps
      * @param $nonRepeater
-     * @param $oid
-     * @return \FreeDSx\Snmp\OidList
-     * @throws \FreeDSx\Snmp\Exception\ConnectionException
-     * @throws \FreeDSx\Snmp\Exception\SnmpRequestException
+     * @param Oid $oid
+     * @return OidList
+     * @throws ConnectionException
+     * @throws SnmpRequestException
      */
-    public function getBulk($reps, $nonRepeater, $oid)
+    public function getBulk($reps, $nonRepeater, Oid $oid): OidList
     {
         return $this->client->getBulk($reps, $nonRepeater, $oid);
     }
@@ -154,8 +181,24 @@ class Snmp
     /**
      * @return Requests
      */
-    public function request()
+    public function request(): Requests
     {
-        return new Requests;
+        return new Requests();
+    }
+
+    /**
+     * @return array
+     */
+    private function getOptions(): array
+    {
+        return $this->client->getOptions();
+    }
+
+    /**
+     * @param $options
+     */
+    private function setOptions($options): void
+    {
+        $this->client->setOptions($options);
     }
 }
