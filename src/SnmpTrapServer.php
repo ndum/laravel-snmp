@@ -16,9 +16,9 @@ use FreeDSx\Socket\SocketServer;
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
- * 
+ *
  * extended by (c) Nicolas D <nd@nidum.org>
- * 
+ *
  */
 
 class SnmpTrapServer
@@ -49,8 +49,9 @@ class SnmpTrapServer
     /**
      * @param TrapListenerInterface $listener
      * @param array $options
+     * @return void
      */
-    public function __construct(TrapListenerInterface $listener, array $options = [])
+    public function prepare(TrapListenerInterface $listener, array $options = []): void
     {
         $this->options = array_merge($this->options, $options);
         $this->listener = $listener;

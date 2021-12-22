@@ -121,7 +121,9 @@ $options = [
     ];
 
 $listener = new TrapListener(); ### your in step 1 created listener-class
-$server = new SnmpTrapServer($listener, $options) # $options only needed if other than default;
+
+$server = new SnmpTrapServer()
+$server->prepare($listener, $options) # $options only needed if other than default
 $server->listen();
 
 # in addition: (only if needed)
