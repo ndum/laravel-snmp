@@ -53,7 +53,56 @@ $result = $snmp->getValue('1.3.6.1.2.1.1.5.0'); ## hostname
 dd($result);
 ```
 
-##### SNMP trap sink (Trap Listener/Server):
+##### SNMP traps part 1. (sending traps):
+
+***v1***
+
+```php
+
+$snmp = new Snmp();
+$snmp->newClient('targetserver', 1, 'secret', 162); 
+
+# Parameters:
+# The enterprise OID to trigger (string)
+# The IP address. (string)
+# The generic trap type (int)
+# The specific trap type (int)
+# The system uptime (in seconds/int)
+# The OIDs and their values (string/int)
+$snmp->sendTrapV1('1.3.6.1.4.1.2021.251.1','localhost', 0, 0, 60, '1.3.6.1.2.1.1.3', 60);
+```
+
+***v2c / v3***
+
+```php
+use Ndum\Laravel\Snmp;
+
+$snmp = new Snmp();
+$snmp->newClient('targetserver', 2, 'secret', 162);
+
+# Parameters:
+# The system uptime (in seconds/int)
+# The trap OID (string)
+# The OIDs and their values (string/int)
+$snmp->sendTrap(60, '1.3.6.1.4.1.2021.251.1', '1.3.6.1.2.1.1.3', 60));
+```
+
+***inform-request (same as v2c / v3 but require a response from target)***
+
+```php
+use Ndum\Laravel\Snmp;
+
+$snmp = new Snmp();
+$snmp->newClient('targetserver', 2, 'secret', 162);
+
+# Parameters:
+# The system uptime (in seconds/int)
+# The trap OID (string)
+# The OIDs and their values (string/int)
+$snmp->sendInform(60, '1.3.6.1.4.1.2021.251.1', '1.3.6.1.2.1.1.3', 60));
+```
+
+##### SNMP traps part 2. (Receiving traps / trap sink):
 1) First, create a trap listener-class (examples can be found [here](https://github.com/ndum/laravel-snmp/tree/master/examples)
 2) Then use it like the following example:
 
@@ -80,9 +129,6 @@ $server->getOptions(); # to get the options
 $server->setOptions($options); # to set the options
 ```
 The official documentation for trap sink can be found [here](https://github.com/FreeDSx/SNMP/blob/master/docs/Server/Trap-Sink.md)
-
-## Limitations
-SNMP trap sink currently does not support SNMPv3 inform requests. However, SNMPv2 inform requests are supported.
 
 ## Issues / Contributions
 Directly via GitHub

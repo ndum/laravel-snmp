@@ -9,6 +9,18 @@ use FreeDSx\Snmp\Server\ServerRunner\TrapServerRunner;
 use FreeDSx\Snmp\Trap\TrapListenerInterface;
 use FreeDSx\Socket\SocketServer;
 
+/**
+ * This file is part of the FreeDSx SNMP package.
+ *
+ * (c) Chad Sikorra <Chad.Sikorra@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ * 
+ * extended by (c) Nicolas D <nd@nidum.org>
+ * 
+ */
+
 class SnmpTrapServer
 {
     /**

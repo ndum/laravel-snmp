@@ -34,7 +34,7 @@ class Snmp
         try {
             $this->instance = new SnmpClient();
         } catch (Exception $e) {
-            throw new Exception('Error initializing FreeDSx/Snmp', 1);
+            throw new \RuntimeException('Error initializing FreeDSx/Snmp', 1);
         }
     }
 
@@ -173,6 +173,54 @@ class Snmp
     public function request(): Requests
     {
         return new Requests();
+    }
+
+    /**
+     * @param string $enterprise
+     * @param string $address
+     * @param int $genericType
+     * @param int $specificType
+     * @param int $sysUpTime
+     * @param ...$oids
+     * @return $this
+     */
+    public function sendTrapV1(string $enterprise, string $address, int $genericType, int $specificType, int $sysUpTime, ...$oids)
+    {
+        $oidsTicks = Oid::fromTimeticks(...$oids);
+
+        $this->send(Requests::trapV1($enterprise, $address, $genericType, $specificType, $sysUpTime, $oidsTicks));
+
+        return $this;
+    }
+
+    /**
+     * @param $sysUpTime
+     * @param $trapOid
+     * @param ...$oids
+     * @return $this
+     * @throws ConnectionException
+     * @throws SnmpRequestException
+     */
+    public function sendTrap($sysUpTime, $trapOid, ...$oids)
+    {
+        $oidsTicks = Oid::fromTimeticks(...$oids);
+
+        $this->send(Requests::trap($sysUpTime, $trapOid, $oidsTicks));
+
+        return $this;
+    }
+
+    /**
+     * @param $sysUpTime
+     * @param $trapOid
+     * @param ...$oids
+     * @return MessageResponseInterface
+     */
+    public function sendInform($sysUpTime, $trapOid, ...$oids): MessageResponseInterface
+    {
+        $oidsTicks = Oid::fromTimeticks(...$oids);
+
+        return $this->sendAndReceive(Requests::inform($sysUpTime, $trapOid, $oidsTicks));
     }
 
     /**
