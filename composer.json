@@ -25,7 +25,8 @@
                 "Ndum\\Laravel\\SnmpServiceProvider"
             ],
             "aliases": {
-                "snmp": "Ndum\\Laravel\\Facades\\Snmp"
+                "snmp": "Ndum\\Laravel\\Facades\\Snmp",
+                "snmptrapserver": "Ndum\\Laravel\\Facades\\SnmpTrapServer"
             }
         }
     },

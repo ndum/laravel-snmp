@@ -4,13 +4,13 @@ namespace Ndum\Laravel\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
-class Snmp extends Facade
+class SnmpTrapServer extends Facade
 {
     /**
      * @return string
      */
     protected static function getFacadeAccessor()
     {
-        return 'snmp';
+        return 'snmptrapserver';
     }
 }

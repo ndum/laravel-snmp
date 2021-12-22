@@ -14,6 +14,10 @@ class SnmpServiceProvider extends ServiceProvider
         $this->app->singleton('snmp', function ($app) {
             return new Snmp();
         });
+
+        $this->app->singleton('snmptrapserver', function ($app) {
+            return new SnmpTrapServer();
+        });
     }
 
     /**

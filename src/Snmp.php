@@ -39,19 +39,11 @@ class Snmp
     }
 
     /**
-     * @param string $host
-     * @param int $version
-     * @param string $community
-     * @param int $port
-     * @param string $transport
      * @param null $user
-     * @param bool $auth
      * @param null $auth_mech
      * @param null $auth_pwd
-     * @param bool $use_priv
      * @param null $priv_mech
      * @param null $priv_pwd
-     * @return SnmpClient
      */
     public function newClient(string $host, int $version, string $community, int $port = 161, string $transport = 'udp',
                               $user = null, bool $auth = false, $auth_mech = null, $auth_pwd = null, bool $use_priv = false,
@@ -75,6 +67,7 @@ class Snmp
 
     /**
      * @param int $timeout
+     * @return void
      */
     public function setTimeoutConnectValue(int $timeout = 5): void
     {
@@ -87,6 +80,7 @@ class Snmp
 
     /**
      * @param int $timeout
+     * @return void
      */
     public function setTimeoutReadValue(int $timeout = 10): void
     {
@@ -99,7 +93,6 @@ class Snmp
 
     /**
      * @param $oidList
-     *
      * @return OidList
      * @throws ConnectionException
      * @throws SnmpRequestException
@@ -127,9 +120,6 @@ class Snmp
         return $this->client->getOid($oid);
     }
 
-    /**
-     * @return SnmpWalk
-     */
     public function walk(): SnmpWalk
     {
         return $this->client->walk();
@@ -146,7 +136,6 @@ class Snmp
 
     /**
      * @param $request
-     *
      * @return MessageResponseInterface|null
      * @throws ConnectionException
      * @throws SnmpRequestException
