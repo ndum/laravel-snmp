@@ -4,7 +4,7 @@
     "type": "laravel",
     "require": {
         "php": ">=7.1",
-        "freedsx/snmp": "^0.4.0",
+        "freedsx/snmp": "^0.5.0",
         "illuminate/support": "~5.5|~6.0|~7.0|~8.0"
     },
     "license": "MIT",
