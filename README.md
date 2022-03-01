@@ -4,7 +4,7 @@ This Laravel-Package provides an simple Laravel-Wrapper for the excellent FreeDS
 
 ## Requirements
 
-Requires: Laravel >= 5.5 or Laravel 6.x / 7.x / 8.x and PHP 7.1 or higher
+Requires: Laravel >= 5.5 or higher
 
 ## Installation
 Install via Composer.
