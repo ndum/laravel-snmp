@@ -11,23 +11,44 @@ jobs:
 
     runs-on: ubuntu-latest
 
-    steps:
-    - uses: actions/checkout@v2
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - laravel: "~10.0"
+            php: "8.2"
+          - laravel: "~11.0"
+            php: "8.2"
+          - laravel: "~12.0"
+            php: "8.2"
+          - laravel: "~13.0"
+            php: "8.3"
 
-    - name: Validate composer.json and composer.lock
+    name: Laravel ${{ matrix.laravel }} (PHP ${{ matrix.php }})
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup PHP ${{ matrix.php }}
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: ${{ matrix.php }}
+        tools: composer:v2
+
+    - name: Validate composer.json
       run: composer validate --strict
 
     - name: Cache Composer packages
       id: composer-cache
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: vendor
-        key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+        key: ${{ runner.os }}-php${{ matrix.php }}-laravel${{ matrix.laravel }}-${{ hashFiles('**/composer.json') }}
         restore-keys: |
-          ${{ runner.os }}-php-
+          ${{ runner.os }}-php${{ matrix.php }}-laravel${{ matrix.laravel }}-
 
-    - name: Install dependencies
-      run: composer install --prefer-dist --no-progress --no-suggest
+    - name: Install dependencies with Laravel ${{ matrix.laravel }}
+      run: composer require "illuminate/support:${{ matrix.laravel }}" --prefer-dist --no-progress --no-interaction
 
     # Add a test script to composer.json, for instance: "test": "vendor/bin/phpunit"
     # Docs: https://getcomposer.org/doc/articles/scripts.md
